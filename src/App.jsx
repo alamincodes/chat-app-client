@@ -12,11 +12,12 @@ import { Toaster } from "react-hot-toast";
 import { useThemeStore } from "./store/useThemeStore";
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
-  const { theme, setTheme } = useThemeStore();
+  const { theme } = useThemeStore();
+
   useEffect(() => {
     checkAuth();
   }, []);
-  console.log({ authUser });
+
   if (isCheckingAuth && !authUser) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -43,7 +44,10 @@ function App() {
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/login"
+          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+        />
       </Routes>
 
       <Toaster />

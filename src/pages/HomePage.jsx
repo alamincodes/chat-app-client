@@ -1,5 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useChatStore } from "../store/useChatStore";
+import Sidebar from "../components/Sidebar";
+import NoChatSelected from "../components/NoChatSelected";
+import ChatContainer from "../components/ChatContainer";
 
 export default function HomePage() {
-  return <div>HomePage</div>;
+  const { users, isUsersLoading, getUsers, selectedUser } = useChatStore();
+  useEffect(() => {
+    getUsers();
+  }, []);
+  return (
+    <div className="h-screen bg-base-200">
+      <div className="flex items-center justify-center px-4 pt-20">
+        <div className="bg-base-100 rounded-lg shadow-cl w-full max-w-6xl h-[calc(100vh-8rem)]">
+          <div className="flex h-full overflow-hidden rounded-lg">
+            <Sidebar />
+
+            {!selectedUser ? <NoChatSelected /> : <ChatContainer />}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
